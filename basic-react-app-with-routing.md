@@ -1,3 +1,4 @@
+
 ## Installing Node.js
  - To check whether or not Node.js is installed run `node -v`.  
  - If not install `nvm` by running `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash` in a terminal.
@@ -125,6 +126,8 @@ class About extends Component {
 
 export default About;
 ```
+
+To create a production build of the application run `npm run build` in the terminal. A folder named `build` will be created in the `newapp` folder. Now you can host the `build` folder using apache or nginx.
 ## References
 
  - [https://reactjs.org/docs/introducing-jsx.html](https://reactjs.org/docs/introducing-jsx.html)
