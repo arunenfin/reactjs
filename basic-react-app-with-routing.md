@@ -125,7 +125,7 @@ class About extends Component {
 
 export default About;
 ```
-### References
+## References
 
  - [https://reactjs.org/docs/introducing-jsx.html](https://reactjs.org/docs/introducing-jsx.html)
  - [https://reactjs.org/docs/rendering-elements.html](https://reactjs.org/docs/rendering-elements.html)
