@@ -6,8 +6,8 @@
 ## Install `create-react-app`
  - Open a new terminal. Install `create-react-app` globally by running `npm i -g create-react-app`
 ## Create a ReactJs application
- - Create a new react application called `newapp` by running `create-react-app newapp`. This will create a folder called `newapp` and install the required packages.
- - Open the `newapp` folder in Visual Studio Code and press ``Ctrl + ` `` to open the terminal. Run `npm start`. This will start the app in development mode.
+ - Create a new react application called `basicapp` by running `create-react-app basicapp`. This will create a folder called `basicapp` and install the required packages.
+ - Open the `basicapp` folder in Visual Studio Code and press ``Ctrl + ` `` to open the terminal. Run `npm start`. This will start the app in development mode.
 ## Add new components
 There are two types of components - function components and class components. Class components have access to [state](https://reactjs.org/docs/state-and-lifecycle.html) and component [lifecycle methods](https://reactjs.org/docs/state-and-lifecycle.html).
  - Create a folder called `components` in the src folder.
@@ -126,8 +126,8 @@ class About extends Component {
 
 export default About;
 ```
-
-To create a production build of the application run `npm run build` in the terminal. A folder named `build` will be created in the `newapp` folder. Now you can host the `build` folder using apache or nginx.
+## Creating a production build
+To create a production build of the application run `npm run build` in the terminal. A folder named `build` will be created in the `basicapp` folder. Now you can host the `build` folder using apache or nginx.
 ## References
 
  - [https://reactjs.org/docs/introducing-jsx.html](https://reactjs.org/docs/introducing-jsx.html)
