@@ -128,6 +128,9 @@ export default About;
 ```
 ## Creating a production build
 To create a production build of the application run `npm run build` in the terminal. A folder named `build` will be created in the `basicapp` folder. Now you can host the `build` folder using apache or nginx.
+
+> Please refer the folder `basicapp` for the complete code.
+
 ## References
 
  - [https://reactjs.org/docs/introducing-jsx.html](https://reactjs.org/docs/introducing-jsx.html)
