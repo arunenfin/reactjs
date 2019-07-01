@@ -136,3 +136,4 @@ To create a production build of the application run `npm run build` in the termi
  - [https://reactjs.org/docs/introducing-jsx.html](https://reactjs.org/docs/introducing-jsx.html)
  - [https://reactjs.org/docs/rendering-elements.html](https://reactjs.org/docs/rendering-elements.html)
  - [https://reactjs.org/docs/components-and-props.html](https://reactjs.org/docs/components-and-props.html)
+ - [https://reacttraining.com/react-router/web/guides/quick-start](https://reacttraining.com/react-router/web/guides/quick-start)

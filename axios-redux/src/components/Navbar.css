@@ -1,0 +1,7 @@
+a{
+  text-decoration: none;
+}
+a.active {
+  color: white;
+  background: grey;
+}
