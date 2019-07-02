@@ -1,4 +1,4 @@
-> Please refer the folder `state-lifecycle` for the complete code.
+> Please refer the folder `state-lifecycle` for the complete code. To run the code open the folder in VS Code and type ``ctrl + ` `` to open terminal. Then run `npm install`. When package installation finishes run `npm start`.
 ## State and Lifecycle Methods
 
  - Convert `./src/components/Home.js` to a Class component.
