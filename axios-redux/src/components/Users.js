@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import Axioslib from '../lib/axioslib';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { updateState } from '../store/actions';
+import Footer from './Footer';
 
 class Users extends Component {
+
+  state = { users: [] }
 
   async getUsers(page) {
     try {
       const response = await Axioslib(`/users?page=${page}`);
       if(response.data.data) {
-        this.props.updateState({ users: response.data.data });
+        this.setState({ users: response.data.data });
       }
     } catch(e) {
       console.log(e)
@@ -19,7 +20,11 @@ class Users extends Component {
   }
 
   listUsers() {
-    return this.props.users.map(user => {
+    if(this.state.users.length === 0) {
+      return <tr><td colSpan="4" className="text-center">Loading...</td></tr>
+    }
+
+    return this.state.users.map(user => {
       return (
         <tr key={user.id}>
           <td><img src={user.avatar} alt="Avatar" /></td>
@@ -28,7 +33,7 @@ class Users extends Component {
           <td><Link className="btn btn-primary btn-sm" to={`/user/${user.id}`}>Edit</Link></td>
         </tr>
       )
-    })
+    });
   }
 
   componentDidMount() {
@@ -53,19 +58,10 @@ class Users extends Component {
             {this.listUsers()}
           </tbody>
         </table>
+        <Footer />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    users: state.users
-  }
-}
-
-const mapDispatchToProps = {
-  updateState
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default Users;

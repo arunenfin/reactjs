@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
-// import Axioslib from '../lib/axioslib';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import Axioslib from '../lib/axioslib';
+import { Link } from 'react-router-dom';
+import Footer from './Footer';
 
 class EditUser extends Component {
 
@@ -16,25 +16,35 @@ class EditUser extends Component {
     }
   }
 
+  async getUser(id) {
+    try {
+      const response = await Axioslib(`/users/${id}`);
+      if(response.data.data) {
+        this.setState({ user: response.data.data });
+      }
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   _handleSubmit = (e) => {
     e.preventDefault();
   }
 
   componentDidMount() {
-    const user = this.props.users.find(usr => {
-      return usr.id === parseInt(this.props.match.params.id)
-    });
-    this.setState({ user });
+    this.getUser(this.props.match.params.id);
   }
 
   render() {
-    if(this.props.users.length === 0) {
-      return <Redirect to="/users" />
-    }
-
     return (
       <div>
         <Navbar page="users" />
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><Link to="/users">Users</Link></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+          </ol>
+        </nav>
         <h1>Edit User</h1>
         <form onSubmit={this._handleSubmit}>
           <div className="form-group text-center">
@@ -54,15 +64,10 @@ class EditUser extends Component {
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
+        <Footer />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    users: state.users
-  }
-}
-
-export default connect(mapStateToProps)(EditUser);
+export default EditUser;
