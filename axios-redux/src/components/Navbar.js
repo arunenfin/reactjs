@@ -1,10 +1,23 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import './Navbar.css';
 
+const paths = [
+  { pathname: "/", text: "Home" },
+  { pathname: "/about", text: "About" },
+  { pathname: "/users", text: "Users" }
+];
+
 function Navbar(props) {
-  let pages = { home: "nav-item", about: "nav-item", users: "nav-item" };
-  pages[props.page] = pages[props.page] + " active";
+
+  const liElems = paths.map(path => {
+    const classes = (path.pathname === props.location.pathname) ? "nav-item active" : "nav-item";
+    return (
+      <li key={path.pathname} className={classes}>
+        <Link to={path.pathname} className="nav-link">{path.text}</Link>
+      </li>
+    )
+  });
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -13,19 +26,11 @@ function Navbar(props) {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <li className={ pages.home }>
-            <Link to="/" className="nav-link">Home</Link>
-          </li>
-          <li className={ pages.about }>
-            <Link to="/about" className="nav-link">About</Link>
-          </li>
-          <li className={ pages.users }>
-            <Link to="/users" className="nav-link">Users</Link>
-          </li>
+          {liElems}
         </ul>
       </div>
     </nav>
   );
 }
 
-export default Navbar;
+export default withRouter(Navbar);

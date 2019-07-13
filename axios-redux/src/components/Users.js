@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
 import Axioslib from '../lib/axioslib';
 import { Link } from 'react-router-dom';
-import Footer from './Footer';
 
 class Users extends Component {
 
@@ -43,7 +41,6 @@ class Users extends Component {
   render() {
     return (
       <div>
-        <Navbar page="users" />
         <h1>Users list</h1>
         <table className="table">
           <thead>
@@ -58,7 +55,6 @@ class Users extends Component {
             {this.listUsers()}
           </tbody>
         </table>
-        <Footer />
       </div>
     );
   }

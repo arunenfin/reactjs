@@ -1,90 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FullScreenIcon from '../assets/images/fullscreen.svg';
-import FullScreenExitIcon from '../assets/images/fullscreen_exit.svg';
-import { toggleFullScreen } from '../store/actions';
-
+import { toggleSidebar } from '../store/actions';
+import MaterialIcon from '@material/react-material-icon';
 class Footer extends Component {
 
-  fullScreen() {
-    let el = document.documentElement;
-    let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-    rfs.call(el);
-  }
-
-  exitFullScreen() {
-    let el = document;
-    let rfs = el.exitFullscreen || el.webkitExitFullscreen || el.mozCancelFullScreen || el.msExitFullscreen;
-    rfs.call(el);
-  }
-
-  // click handler for fullscreen icon
-  _toggleFullScreen = () => {
-    if (this.props.fullScreen) {
-      this.exitFullScreen();
-    } else {
-      this.fullScreen();
-    }
-    this.props.toggleFullScreen();
-  }
-
-  // fullscreenchange event handler
-  _handleFullscreenChange = (event) => {
-    let elem = event.target;
-    let isFullscreen = document.fullscreenElement === elem;
-    if ((isFullscreen && !this.props.fullScreen) || (!isFullscreen && this.props.fullScreen)) {
-      this.props.toggleFullScreen();
-    }
-  }
-
-  // add event listeners for fullscreenchange event
-  componentDidMount() {
-    /* Standard syntax */
-    document.addEventListener("fullscreenchange", this._handleFullscreenChange);
-    /* Firefox */
-    document.addEventListener("mozfullscreenchange", this._handleFullscreenChange);
-    /* Chrome, Safari and Opera */
-    document.addEventListener("webkitfullscreenchange", this._handleFullscreenChange);
-    /* IE / Edge */
-    document.addEventListener("msfullscreenchange", this._handleFullscreenChange);
-  }
-
-  // remove event listeners when component unmounts
-  componentWillUnmount() {
-    /* Standard syntax */
-    document.removeEventListener("fullscreenchange", this._handleFullscreenChange);
-    /* Firefox */
-    document.removeEventListener("mozfullscreenchange", this._handleFullscreenChange);
-    /* Chrome, Safari and Opera */
-    document.removeEventListener("webkitfullscreenchange", this._handleFullscreenChange);
-    /* IE / Edge */
-    document.removeEventListener("msfullscreenchange", this._handleFullscreenChange);
+  _toggleSidebar = () => {
+    this.props.toggleSidebar();
   }
 
   render() {
+    const sidebarIcon = this.props.sidebarOpen ? 'chevron_left' : 'chevron_right';
+
     return (
       <div className="clearfix">
         <div className="float-left">
-          &copy; 2019 example.com
+          <button type="button" className="btn btn-outline-secondary" onClick={this._toggleSidebar}>
+            <MaterialIcon className="align-bottom" icon={sidebarIcon} />
+          </button>
         </div>
         <div className="float-right">
-          <img width="48" onClick={this._toggleFullScreen} src={this.props.fullScreen ? FullScreenExitIcon : FullScreenIcon} alt="Fullscreen" />
+          <span>&copy; 2019 example.com</span>
         </div>
       </div>
     )
   }
 }
 
-// map fullScreen property from redux store to props
+// map sidebarOpen property from redux store to props
 function mapStateToProps(state) {
   return {
-    fullScreen: state.fullScreen
+    sidebarOpen: state.sidebarOpen
   }
 }
 
-// map toggleFullScreen function to props
+// map toggleSidebar function to props
 const mapDispatchToProps = {
-  toggleFullScreen
+  toggleSidebar: toggleSidebar
 }
 
 // connect redux store to component

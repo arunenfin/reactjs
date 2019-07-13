@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
 import Axioslib from '../lib/axioslib';
 import { Link } from 'react-router-dom';
-import Footer from './Footer';
 
 class EditUser extends Component {
 
@@ -38,7 +36,6 @@ class EditUser extends Component {
   render() {
     return (
       <div>
-        <Navbar page="users" />
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><Link to="/users">Users</Link></li>
@@ -64,7 +61,6 @@ class EditUser extends Component {
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
-        <Footer />
       </div>
     );
   }

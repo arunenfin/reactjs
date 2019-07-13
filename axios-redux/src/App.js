@@ -4,17 +4,20 @@ import Home from './components/Home';
 import About from './components/About';
 import Users from './components/Users';
 import EditUser from './components/EditUser';
+import AppContainer from './components/AppContainer';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/about/" component={About} />
-        <Route path="/users/" component={Users} />
-        <Route path="/user/:id" component={EditUser} />
-      </Switch>
+      <AppContainer>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/about/" component={About} />
+          <Route path="/users/" component={Users} />
+          <Route path="/user/:id" component={EditUser} />
+        </Switch>
+      </AppContainer>
     </Router>
   );
 }
