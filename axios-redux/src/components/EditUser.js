@@ -25,6 +25,15 @@ class EditUser extends Component {
     }
   }
 
+  _handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    this.setState(prevState => {
+      return { user: { ...prevState.user, [name]: value } }
+    })
+  }
+
   _handleSubmit = (e) => {
     e.preventDefault();
   }
@@ -37,9 +46,9 @@ class EditUser extends Component {
     return (
       <div>
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><Link to="/users">Users</Link></li>
-            <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link to="/users">Users</Link></li>
+            <li className="breadcrumb-item active" aria-current="page">Edit User</li>
           </ol>
         </nav>
         <h1>Edit User</h1>
@@ -49,15 +58,15 @@ class EditUser extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="firstname">First Name</label>
-            <input type="text" readOnly value={this.state.user.first_name} className="form-control" id="firstname" placeholder="First Name" />
+            <input type="text" name="first_name" onChange={this._handleChange} value={this.state.user.first_name} className="form-control" id="firstname" placeholder="First Name" />
           </div>
           <div className="form-group">
             <label htmlFor="lastname">Last Name</label>
-            <input type="text" readOnly value={this.state.user.last_name} className="form-control" id="lastname" placeholder="Last Name" />
+            <input type="text" name="last_name" onChange={this._handleChange} value={this.state.user.last_name} className="form-control" id="lastname" placeholder="Last Name" />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
-            <input type="email" readOnly value={this.state.user.email} className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+            <input type="email" name="email" onChange={this._handleChange} value={this.state.user.email} className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
