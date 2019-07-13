@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toggleSidebar } from '../store/actions';
-import MaterialIcon from '@material/react-material-icon';
+import { ArrowLeftCircle, ArrowRightCircle } from 'react-feather';
 class Footer extends Component {
 
   _toggleSidebar = () => {
@@ -9,13 +9,11 @@ class Footer extends Component {
   }
 
   render() {
-    const sidebarIcon = this.props.sidebarOpen ? 'chevron_left' : 'chevron_right';
-
     return (
       <div className="clearfix">
         <div className="float-left">
           <button type="button" className="btn btn-outline-secondary" onClick={this._toggleSidebar}>
-            <MaterialIcon className="align-bottom" icon={sidebarIcon} />
+            { this.props.sidebarOpen ? <ArrowLeftCircle size="24" /> : <ArrowRightCircle size="24" /> }
           </button>
         </div>
         <div className="float-right">
