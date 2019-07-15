@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
 import Axioslib from '../lib/axioslib';
 import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+
+const REQUIRED = 'Required';
+const MIN = 'Minimum 2 characters required';
+const MAX = 'Maximum 20 characters required';
+const INVALIDEMAIL = 'Invalid email';
+
+const EditSchema = Yup.object().shape({
+  email: Yup.string()
+    .email(INVALIDEMAIL)
+    .required(REQUIRED),
+  first_name: Yup.string()
+    .required(REQUIRED)
+    .min(2, MIN)
+    .max(20, MAX),
+  last_name: Yup.string()
+    .required(REQUIRED)
+    .min(2, MIN)
+    .max(20, MAX),
+});
 
 class EditUser extends Component {
 
@@ -11,7 +31,9 @@ class EditUser extends Component {
       first_name: "",
       last_name: "",
       avatar: ""
-    }
+    },
+    errors: {},
+    formValid: true
   }
 
   async getUser(id) {
@@ -25,17 +47,38 @@ class EditUser extends Component {
     }
   }
 
+  // this method is called after state is updated in the _handleChange method
+  _validateForm = async () => {
+    try {
+      const { email, first_name, last_name } = this.state.user;
+      await EditSchema.validate({ email, first_name, last_name }, { abortEarly: false });
+      
+      this.setState({ errors: {}, formValid: true })
+    } catch(e) {
+      let errors = {};
+      for(let i=0; i<e.inner.length; i++) {
+        const eInner = e.inner[i];
+        errors[eInner.path] = eInner.message;
+      }
+      
+      this.setState({ errors: errors, formValid: false })
+    }
+  }
+
   _handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
 
     this.setState(prevState => {
       return { user: { ...prevState.user, [name]: value } }
-    })
+    }, this._validateForm)
   }
 
   _handleSubmit = (e) => {
     e.preventDefault();
+    if(this.state.formValid) {
+      // save data using axios request
+    }
   }
 
   componentDidMount() {
@@ -58,15 +101,18 @@ class EditUser extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="firstname">First Name</label>
-            <input type="text" name="first_name" onChange={this._handleChange} value={this.state.user.first_name} className="form-control" id="firstname" placeholder="First Name" />
+            <input type="text" name="first_name" onChange={this._handleChange} value={this.state.user.first_name} className={this.state.errors.first_name ? "form-control is-invalid" : "form-control"} id="firstname" placeholder="First Name" />
+            <div className="invalid-feedback">{this.state.errors.first_name}</div>
           </div>
           <div className="form-group">
             <label htmlFor="lastname">Last Name</label>
-            <input type="text" name="last_name" onChange={this._handleChange} value={this.state.user.last_name} className="form-control" id="lastname" placeholder="Last Name" />
+            <input type="text" name="last_name" onChange={this._handleChange} value={this.state.user.last_name} className={this.state.errors.last_name ? "form-control is-invalid" : "form-control"} id="lastname" placeholder="Last Name" />
+            <div className="invalid-feedback">{this.state.errors.last_name}</div>
           </div>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
-            <input type="email" name="email" onChange={this._handleChange} value={this.state.user.email} className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+            <input type="email" name="email" onChange={this._handleChange} value={this.state.user.email} className={this.state.errors.email ? "form-control is-invalid" : "form-control"} id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+            <div className="invalid-feedback">{this.state.errors.email}</div>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
