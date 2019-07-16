@@ -33,14 +33,15 @@ class EditUser extends Component {
       avatar: ""
     },
     errors: {},
-    formValid: true
+    formValid: true,
+    formSubmitted: false
   }
 
   async getUser(id) {
     try {
       const response = await Axioslib(`/users/${id}`);
       if(response.data.data) {
-        this.setState({ user: response.data.data });
+        this.setState({ user: response.data.data }, this._validateForm);
       }
     } catch(e) {
       console.log(e)
@@ -76,6 +77,7 @@ class EditUser extends Component {
 
   _handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ formSubmitted: true })
     if(this.state.formValid) {
       // save data using axios request
     }
@@ -101,18 +103,18 @@ class EditUser extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="firstname">First Name</label>
-            <input type="text" name="first_name" onChange={this._handleChange} value={this.state.user.first_name} className={this.state.errors.first_name ? "form-control is-invalid" : "form-control"} id="firstname" placeholder="First Name" />
-            <div className="invalid-feedback">{this.state.errors.first_name}</div>
+            <input type="text" name="first_name" onChange={this._handleChange} value={this.state.user.first_name} className={(this.state.formSubmitted && this.state.errors.first_name) ? "form-control is-invalid" : "form-control"} id="firstname" placeholder="First Name" />
+            <div className="invalid-feedback">{this.state.formSubmitted && this.state.errors.first_name}</div>
           </div>
           <div className="form-group">
             <label htmlFor="lastname">Last Name</label>
-            <input type="text" name="last_name" onChange={this._handleChange} value={this.state.user.last_name} className={this.state.errors.last_name ? "form-control is-invalid" : "form-control"} id="lastname" placeholder="Last Name" />
-            <div className="invalid-feedback">{this.state.errors.last_name}</div>
+            <input type="text" name="last_name" onChange={this._handleChange} value={this.state.user.last_name} className={(this.state.formSubmitted && this.state.errors.last_name) ? "form-control is-invalid" : "form-control"} id="lastname" placeholder="Last Name" />
+            <div className="invalid-feedback">{this.state.formSubmitted && this.state.errors.last_name}</div>
           </div>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
-            <input type="email" name="email" onChange={this._handleChange} value={this.state.user.email} className={this.state.errors.email ? "form-control is-invalid" : "form-control"} id="email" aria-describedby="emailHelp" placeholder="Enter email" />
-            <div className="invalid-feedback">{this.state.errors.email}</div>
+            <input type="email" name="email" onChange={this._handleChange} value={this.state.user.email} className={(this.state.formSubmitted && this.state.errors.email) ? "form-control is-invalid" : "form-control"} id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+            <div className="invalid-feedback">{this.state.formSubmitted && this.state.errors.email}</div>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
