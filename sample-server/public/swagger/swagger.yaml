@@ -1,0 +1,162 @@
+openapi: 3.0.0
+servers:
+  - description: Sample Server API
+    url: http://localhost:8000
+info:
+  description: |
+    This is API documentation for Sample Server API
+  version: "1.0.0"
+  title: Sample-Server
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Public
+    description: Public APIs
+  - name: Protected
+    description: Protected APIs, Requires Authorization header
+paths:
+  '/register':
+    post:
+      tags:
+        - Public
+      summary: Register user
+      operationId: register
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed to generate meeting urls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/authenticate':
+    post:
+      tags:
+        - Public
+      summary: Authenticate user and return token
+      operationId: authenticate
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Authenticate'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed to generate meeting urls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users':
+    get:
+      tags:
+        - Protected
+      summary: Get list of users
+      operationId: users
+      parameters:
+        - name: name
+          in: query
+          description: name of user
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Email of user
+          schema:
+            type: string
+        - name: role
+          in: query
+          description: Role of user
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed to generate meeting urls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+components:
+  schemas:
+    Register:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: 'Arun'
+        email:
+          type: string
+          format: email
+          example: 'arun@gmail.com'
+        password:
+          type: string
+        role:
+          type: integer
+          format: int32
+          example: 1
+    Authenticate:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: 'arun@gmail.com'
+        password:
+          type: string
+    Success:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        result:
+          type: object
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
