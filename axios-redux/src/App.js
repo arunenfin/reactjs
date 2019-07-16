@@ -10,14 +10,14 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <AppContainer>
-        <Switch>
+      <Switch>
+        <AppContainer>
           <Route path="/" exact component={Home} />
           <Route path="/about/" component={About} />
           <Route path="/users/" component={Users} />
           <Route path="/user/:id" component={EditUser} />
-        </Switch>
-      </AppContainer>
+        </AppContainer>
+      </Switch>
     </Router>
   );
 }
