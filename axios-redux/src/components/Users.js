@@ -28,7 +28,7 @@ class Users extends Component {
           <td><img src={user.avatar} alt="Avatar" /></td>
           <td>{user.first_name+' '+user.last_name}</td>
           <td>{user.email}</td>
-          <td><Link className="btn btn-primary btn-sm" to={`/user/${user.id}`}>Edit</Link></td>
+          <td><Link className="btn btn-primary btn-sm" to={`/users/edit/${user.id}`}>Edit</Link></td>
         </tr>
       )
     });
