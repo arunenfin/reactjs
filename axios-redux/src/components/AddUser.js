@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Axioslib from '../lib/axioslib';
+import AppContainer from './AppContainer';
 
 const REQUIRED = 'Required';
 const MIN = 'Minimum 2 characters required';
@@ -81,12 +82,14 @@ class AddUser extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Add User</h1>
-        <Formik initialValues={this._initialValues} validationSchema={SignupSchema} onSubmit={this._handleSubmit}>
-          {this._signUpForm}
-        </Formik>
-      </div>
+      <AppContainer>
+        <div>
+          <h1>Add User</h1>
+          <Formik initialValues={this._initialValues} validationSchema={SignupSchema} onSubmit={this._handleSubmit}>
+            {this._signUpForm}
+          </Formik>
+        </div>
+      </AppContainer>
     )
   }
 }
