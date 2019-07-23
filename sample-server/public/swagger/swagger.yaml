@@ -35,7 +35,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Success'
         '400':
-          description: Failed to generate meeting urls
+          description: Failed
           content:
             application/json:
               schema:
@@ -59,7 +59,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Success'
         '400':
-          description: Failed to generate meeting urls
+          description: Failed
           content:
             application/json:
               schema:
@@ -71,14 +71,14 @@ paths:
       summary: Get list of users
       operationId: users
       parameters:
-        - name: name
+        - name: id
           in: query
-          description: name of user
+          description: user id
           schema:
             type: string
-        - name: email
+        - name: search
           in: query
-          description: Email of user
+          description: search string to search name or email of user
           schema:
             type: string
         - name: role
@@ -95,7 +95,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/Success'
         '400':
-          description: Failed to generate meeting urls
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Protected
+      summary: Update user
+      operationId: updateuser
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Updateuser'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  '/users/upload-avatar':
+    post:
+      tags:
+        - Protected
+      summary: Upload avatar
+      operationId: uploadAvatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Uploadavatar'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
           content:
             application/json:
               schema:
@@ -139,6 +190,24 @@ components:
           example: 'arun@gmail.com'
         password:
           type: string
+    Updateuser:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: 'John Doe'
+        role:
+          type: integer
+          format: int32
+          example: 1
+        status:
+          type: integer
+          format: int32
+          example: 1
     Success:
       type: object
       properties:
@@ -147,6 +216,14 @@ components:
           example: true
         result:
           type: object
+    Uploadavatar:
+      type: object
+      properties:
+        id:
+          type: string
+        photo:
+          type: string
+          format: binary
     Error:
       type: object
       properties:
