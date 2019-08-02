@@ -20,6 +20,7 @@ db.once('open', function() {
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var todosRouter = require('./routes/todos');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', ejwt({secret: JWTSECRET}), usersRouter);
+app.use('/todos', ejwt({secret: JWTSECRET}), todosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
