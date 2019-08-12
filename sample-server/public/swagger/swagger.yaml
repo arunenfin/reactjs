@@ -153,6 +153,99 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
+  '/todos':
+    get:
+      tags:
+        - Protected
+      summary: Get list of todos
+      operationId: todos
+      parameters:
+        - name: id
+          in: query
+          description: todo id
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: search string to search title or description of todo
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: status of todo
+          schema:
+            type: integer
+            format: int32
+        - name: date
+          in: query
+          description: date of todo
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Protected
+      summary: Update todo
+      operationId: updatetodo
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Updatetodo'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Protected
+      summary: create todo
+      operationId: createtodo
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Createtodo'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
@@ -208,6 +301,42 @@ components:
           type: integer
           format: int32
           example: 1
+    Updatetodo:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+          format: int32
+          example: 1
+        date:
+          type: string
+          format: date
+          example: "2019-08-20"
+    Createtodo:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+          format: int32
+          example: 1
+        date:
+          type: string
+          format: date
+          example: "2019-08-20"
     Success:
       type: object
       properties:

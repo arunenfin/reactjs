@@ -25,7 +25,7 @@ const createTodoSchema = Yup.object().shape({
   date: Yup.string().length(10).required(),
 });
 
-/* GET users listing. */
+/* GET todos listing. */
 router.get('/', async function(req, res, next) {
     try {
         const user = req.user;
