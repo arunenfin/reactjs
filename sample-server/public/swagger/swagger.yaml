@@ -348,6 +348,9 @@ components:
           type: object
     Uploadavatar:
       type: object
+      required:
+        - id
+        - photo
       properties:
         id:
           type: string
