@@ -324,6 +324,7 @@ components:
       type: object
       required:
         - title
+        - date
       properties:
         title:
           type: string
