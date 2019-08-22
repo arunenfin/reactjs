@@ -20,6 +20,7 @@ db.once('open', function() {
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var adminsRouter = require('./routes/admins');
 var todosRouter = require('./routes/todos');
 
 var app = express();
@@ -34,8 +35,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/', indexRouter);
-app.use('/users', ejwt({secret: JWTSECRET}), usersRouter);
-app.use('/todos', ejwt({secret: JWTSECRET}), todosRouter);
+app.use('/admins', ejwt({secret: JWTSECRET, audience: "admin"}), adminsRouter);
+app.use('/users', ejwt({secret: JWTSECRET, audience: ["admin", "user"]}), usersRouter);
+app.use('/todos', ejwt({secret: JWTSECRET, audience: "user"}), todosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

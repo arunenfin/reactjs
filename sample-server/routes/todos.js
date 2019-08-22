@@ -35,7 +35,7 @@ router.get('/', async function(req, res, next) {
         res.json({ success: true, result: { data: todos } });
     } catch(e) {
         console.log(e)
-        res.json({ success: false });
+        res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
     }
 });
 
@@ -49,7 +49,7 @@ router.put('/', async function(req, res, next) {
         res.json({ success: true, result: {} });
     } catch(e) {
         console.log(e)
-        res.json({ success: false });
+        res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
     }
 });
 
@@ -62,7 +62,7 @@ router.post('/', async function(req, res, next) {
         res.json({ success: true, result: {} });
     } catch(e) {
         console.log(e)
-        res.json({ success: false });
+        res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
     }
 });
 

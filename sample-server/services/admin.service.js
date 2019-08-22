@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const Admin = require('../models/admin');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const lang = require('../lib/en.json');
@@ -6,27 +6,27 @@ const lang = require('../lib/en.json');
 const SALTROUNDS = 10;
 const JWTSECRET = process.env.JWTSECRET;
 
-module.exports.createUser = (params) => {
-    return exports.getUser({ email: params.email }).then(function (user) {
+module.exports.createAdmin = (params) => {
+    return exports.getAdmin({ email: params.email }).then(function (user) {
         if (user) { throw new Error(lang.USER_REG); }
         return bcrypt.hash(params.password, SALTROUNDS);
     }).then(function (hash) {
         params.password = hash;
-        return new User(params).save();
+        return new Admin(params).save();
     });
 };
 
-// exports.createUser({ name: "Arun", email: "arun@gmail.com", password: "1234" });
+// exports.createAdmin({ name: "Arun", email: "arun@gmail.com", password: "1234" });
 
-module.exports.getUser = (params, project) => {
-    return User.findOne(params, project).lean().exec();
+module.exports.getAdmin = (params, project) => {
+    return Admin.findOne(params, project).lean().exec();
 }
 
-module.exports.updateUser = (params, data) => {
-    return User.updateOne(params, data).exec();
+module.exports.updateAdmin = (params, data) => {
+    return Admin.updateOne(params, data).exec();
 }
 
-module.exports.getUsers = (params, project = { password: 0 }) => {
+module.exports.getAdmins = (params, project = { password: 0 }) => {
     let query = { ...params };
     if (params.search) {
         query['$or'] = [
@@ -37,12 +37,12 @@ module.exports.getUsers = (params, project = { password: 0 }) => {
     }
     if(params.id) {
         query = { _id: params.id };
-        return exports.getUser(query, { password: 0 });
+        return exports.getAdmin(query, { password: 0 });
     }
-    return User.find(query, project).lean().exec();
+    return Admin.find(query, project).lean().exec();
 }
 
-module.exports.getUsersPaginate = (params, project = { password: 0 }) => {
+module.exports.getAdminsPaginate = (params, project = { password: 0 }) => {
     let query = {};
     const page = params.page ? parseInt(params.page) : 1;
     const limit = params.limit ? parseInt(params.limit) : 10;
@@ -61,13 +61,13 @@ module.exports.getUsersPaginate = (params, project = { password: 0 }) => {
     }
     if(params.id) {
         query = { _id: params.id };
-        return exports.getUser(query, project);
+        return exports.getAdmin(query, project);
     }
-    return User.paginate(query, project, { page, limit, sort });
+    return Admin.paginate(query, project, { page, limit, sort });
 }
 
 module.exports.authenticate = async (params) => {
-    const user = await exports.getUser({ email: params.email });
+    const user = await exports.getAdmin({ email: params.email });
 
     if (!user) {
         throw new Error(lang.USER_NF);
@@ -79,5 +79,5 @@ module.exports.authenticate = async (params) => {
         throw new Error(lang.INVALIDPWD);
     }
 
-    return jwt.sign({ _id: user._id, name: user.name, avatar: user.avatar }, JWTSECRET, {audience: "user"});
+    return jwt.sign({ _id: user._id, name: user.name, avatar: user.avatar }, JWTSECRET, {audience: "admin"});
 }

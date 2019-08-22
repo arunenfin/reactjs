@@ -44,8 +44,32 @@ paths:
     post:
       tags:
         - Public
-      summary: Authenticate user and return token
+      summary: Authenticate admin user and return token
       operationId: authenticate
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Authenticate'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/userauthenticate':
+    post:
+      tags:
+        - Public
+      summary: Authenticate user and return token
+      operationId: userAuthenticate
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -133,6 +157,95 @@ paths:
         - Protected
       summary: Upload avatar
       operationId: uploadAvatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Uploadavatar'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  '/admins':
+    get:
+      tags:
+        - Protected
+      summary: Get list of admins
+      operationId: admins
+      parameters:
+        - name: id
+          in: query
+          description: admin id
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: search string to search name or email of admin
+          schema:
+            type: string
+        - name: role
+          in: query
+          description: Role of admin
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Protected
+      summary: Update admin
+      operationId: updateadmin
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Updateadmin'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  '/admins/upload-avatar':
+    post:
+      tags:
+        - Protected
+      summary: Upload avatar
+      operationId: uploadAdminAvatar
       requestBody:
         content:
           multipart/form-data:
@@ -267,10 +380,7 @@ components:
           example: 'arun@gmail.com'
         password:
           type: string
-        role:
-          type: integer
-          format: int32
-          example: 1
+          format: password
     Authenticate:
       type: object
       required:
@@ -283,6 +393,7 @@ components:
           example: 'arun@gmail.com'
         password:
           type: string
+          format: password
     Updateuser:
       type: object
       required:
@@ -297,6 +408,20 @@ components:
           type: integer
           format: int32
           example: 1
+        status:
+          type: integer
+          format: int32
+          example: 1
+    Updateadmin:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: 'John Doe'
         status:
           type: integer
           format: int32

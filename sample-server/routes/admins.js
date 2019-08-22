@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userService = require('../services/user.service');
+var adminService = require('../services/admin.service');
 const Yup = require('yup');
 const multer  = require('multer');
 const path = require('path');
@@ -39,10 +39,10 @@ const updateUserSchema = Yup.object().shape({
 
 const deleteAvatar = async (query) => {
     try {
-        const user = await userService.getUser(query, { avatar: 1 });
+        const user = await adminService.getAdmin(query, { avatar: 1 });
         if(!user) { throw new Error(); }
         if(user.avatar) {
-            await fsunlink(`./public/uploads/users/${user.avatar}`);
+            await fsunlink(`./public/uploads/admin/${user.avatar}`);
         }
         return true;
     } catch(e) {
@@ -55,7 +55,7 @@ const deleteAvatar = async (query) => {
 router.get('/', async function(req, res, next) {
     try {
         await getUsersSchema.validate(req.query);
-        const users = await userService.getUsersPaginate(req.query);
+        const users = await adminService.getAdminsPaginate(req.query);
         res.json({ success: true, result: { data: users } });
     } catch(e) {
         res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
@@ -67,7 +67,7 @@ router.put('/', async function(req, res, next) {
         await updateUserSchema.validate(req.body);
         let { id, email, ...rest } = req.body;
         const data = { $set: rest };
-        await userService.updateUser({ _id: id }, data);
+        await adminService.updateAdmin({ _id: id }, data);
         res.json({ success: true, result: {} });
     } catch(e) {
         res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
@@ -81,7 +81,7 @@ router.post('/upload-avatar', upload.single('photo'), async function(req, res, n
             const { id } = req.body;
             const data = { $set: { avatar: req.file.filename } };
             await deleteAvatar({ _id: id });
-            await userService.updateUser({ _id: id }, data);
+            await adminService.updateAdmin({ _id: id }, data);
             return res.json({ success: true, result: {} });
         }
         throw new Error();
