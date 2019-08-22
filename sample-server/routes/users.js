@@ -36,6 +36,12 @@ const updateUserSchema = Yup.object().shape({
   role: Yup.number().positive().integer(),
   status: Yup.number().positive().integer(),
 });
+ 
+const changePasswordSchema = Yup.object().shape({
+  id: Yup.string().min(24).max(30).required(),
+  password: Yup.string().required().min(6).max(10),
+  newpassword: Yup.string().required().min(6).max(10),
+});
 
 const deleteAvatar = async (query) => {
     try {
@@ -68,6 +74,17 @@ router.put('/', async function(req, res, next) {
         let { id, email, ...rest } = req.body;
         const data = { $set: rest };
         await userService.updateUser({ _id: id }, data);
+        res.json({ success: true, result: {} });
+    } catch(e) {
+        res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });
+    }
+});
+
+router.put('/change-password', async function(req, res, next) {
+    try {
+        await changePasswordSchema.validate(req.body);
+        
+        await userService.changePassword(req.body);
         res.json({ success: true, result: {} });
     } catch(e) {
         res.json({ success: false, errors: (e.errors ? e.errors : [e.message]) });

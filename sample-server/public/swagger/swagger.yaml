@@ -151,6 +151,32 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
+  '/users/change-password':
+    put:
+      tags:
+        - Protected
+      summary: Change user password
+      operationId: changePasswordUser
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Changepassword'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
   '/users/upload-avatar':
     post:
       tags:
@@ -181,25 +207,15 @@ paths:
     get:
       tags:
         - Protected
-      summary: Get list of admins
+      summary: Get admin by id
       operationId: admins
       parameters:
         - name: id
           in: query
+          required: true
           description: admin id
           schema:
             type: string
-        - name: search
-          in: query
-          description: search string to search name or email of admin
-          schema:
-            type: string
-        - name: role
-          in: query
-          description: Role of admin
-          schema:
-            type: integer
-            format: int32
       responses:
         '200':
           description: successful operation
@@ -225,6 +241,32 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Updateadmin'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  '/admins/change-password':
+    put:
+      tags:
+        - Protected
+      summary: Change admin password
+      operationId: changePasswordAdmin
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Changepassword'
       responses:
         '200':
           description: successful operation
@@ -392,6 +434,21 @@ components:
           format: email
           example: 'arun@gmail.com'
         password:
+          type: string
+          format: password
+    Changepassword:
+      type: object
+      required:
+        - id
+        - password
+        - newpassword
+      properties:
+        id:
+          type: string
+        password:
+          type: string
+          format: password
+        newpassword:
           type: string
           format: password
     Updateuser:

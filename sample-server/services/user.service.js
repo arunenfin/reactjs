@@ -81,3 +81,23 @@ module.exports.authenticate = async (params) => {
 
     return jwt.sign({ _id: user._id, name: user.name, avatar: user.avatar }, JWTSECRET, {audience: "user"});
 }
+
+module.exports.changePassword = async (params) => {
+    const user = await exports.getUser({ _id: params.id });
+
+    if (!user) {
+        throw new Error(lang.USER_NF);
+    }
+
+    const match = await bcrypt.compare(params.password, user.password);
+
+    if (!match) {
+        throw new Error(lang.INVALIDPWD);
+    }
+
+    const hash = await bcrypt.hash(params.newpassword, SALTROUNDS);
+
+    await exports.updateUser({ _id: params.id }, { $set: { password: hash } });
+
+    return true;
+}
