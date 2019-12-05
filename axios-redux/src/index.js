@@ -8,16 +8,8 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducer from './store/reducers';
-// import { hydrate, render } from "react-dom";
 
 const store = createStore(reducer);
-// const rootElement = document.getElementById("root");
-
-// if (rootElement.hasChildNodes()) {
-//   hydrate(<Provider store={store}><App /></Provider>, rootElement);
-// } else {
-//   render(<Provider store={store}><App /></Provider>, rootElement);
-// }
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
