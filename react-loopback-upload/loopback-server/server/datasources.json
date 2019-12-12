@@ -1,0 +1,8 @@
+{
+  "memorydb": {
+    "name": "memorydb",
+    "localStorage": "db",
+    "file": "./db",
+    "connector": "memory"
+  }
+}
