@@ -59,12 +59,14 @@ class Documents extends Component {
       for(let j = 0; j < results.length; j++) {
         const result = results[j];
         const data = result.data.result.data;
-        newResourceList.push({
-          name: data.name,
-          original_name: data.original_name,
-          size: data.size,
-          id: data.id
-        })
+        if(result.data.result.statusCode === 200) {
+          newResourceList.push({
+            name: data.name,
+            original_name: data.original_name,
+            size: data.size,
+            id: data.id
+          })
+        }
       }
 
       this.setState(prevState => {
