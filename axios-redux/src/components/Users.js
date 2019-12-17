@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import Axioslib from '../lib/axioslib';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import AppContainer from './AppContainer';
+import { addUsers } from '../store/actions';
 
 class Users extends Component {
-
-  state = { users: [] }
 
   async getUsers(page) {
     try {
       const response = await Axioslib(`/users?page=${page}`);
+      // response.data.data contains array of users
       if (response.data.data) {
-        this.setState({ users: response.data.data });
+        this.props.addUsers(response.data.data);
       }
     } catch (e) {
       console.log(e)
@@ -19,11 +20,11 @@ class Users extends Component {
   }
 
   listUsers() {
-    if (this.state.users.length === 0) {
+    if (this.props.users.length === 0) {
       return <tr><td colSpan="4" className="text-center">Loading...</td></tr>
     }
 
-    return this.state.users.map(user => {
+    return this.props.users.map(user => {
       return (
         <tr key={user.id}>
           <td><img src={user.avatar} alt="Avatar" /></td>
@@ -63,4 +64,16 @@ class Users extends Component {
   }
 }
 
-export default Users;
+// map sidebarOpen property from redux store to props
+function mapStateToProps(state) {
+  return {
+    users: state.users
+  }
+}
+
+// map toggleSidebar function to props
+const mapDispatchToProps = {
+  addUsers: addUsers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
